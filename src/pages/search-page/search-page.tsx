@@ -1,7 +1,10 @@
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 export function SearchPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="page-wrapper">
       <Card className="search-card border-0 shadow-sm">
@@ -29,6 +32,7 @@ export function SearchPage() {
               variant="primary" 
               className="custom-height w-100 d-flex align-items-center justify-content-center"
               style={{ fontWeight: 500, fontSize: '16px' }}
+              onClick={() => navigate('/rennand')}
             >
               Buscar Usuário
             </Button>
