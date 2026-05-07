@@ -1,0 +1,81 @@
+:root {
+  --bs-primary: #0d6efd;
+  --bs-secondary: #6c757d;
+  --bs-dark: #212529;
+  --bs-light: #f8f9fa;
+  --bs-white: #ffffff;
+  --bs-border-color: #dee2e6;
+  --bs-border-radius: 6px;
+  --bs-border-radius-lg: 8px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bs-light);
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bs-light);
+  padding: 1rem;
+}
+
+/* Custom button and input sizing from design */
+.custom-height {
+  height: 48px;
+}
+
+.search-card {
+  max-width: 600px;
+  width: 100%;
+  border-radius: var(--bs-border-radius-lg);
+  border: 1px solid var(--bs-border-color);
+  background-color: var(--bs-white);
+  padding: 32px;
+}
+
+@media (max-width: 576px) {
+  .search-card {
+    padding: 24px;
+  }
+  
+  .search-title {
+    font-size: 24px !important;
+  }
+}
+
+/* Custom InputGroup Focus */
+.input-group-focus-custom {
+  border-radius: var(--bs-border-radius);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border: 1px solid var(--bs-border-color);
+  overflow: hidden; /* Ensure rounded corners clip children if needed */
+}
+
+.input-group-focus-custom:focus-within {
+  border-color: rgb(134, 183, 254) !important;
+  outline: 0;
+  box-shadow: rgba(13, 110, 253, 0.25) 0px 0px 0px 0.25rem;
+}
+
+.input-group-focus-custom .form-control,
+.input-group-focus-custom .input-group-text {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important; /* Let parent background show through if needed */
+}
+
+.input-group-focus-custom .form-control:focus {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.input-group-focus-custom .input-group-text {
+  background-color: #fff !important;
+}

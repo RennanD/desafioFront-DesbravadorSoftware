@@ -1,6 +1,7 @@
+import { SearchPage } from './pages/search-page';
 
-export function App() {
-  return (
-    <h1>Hello world</h1>
-  )
+function App() {
+  return <SearchPage />;
 }
+
+export default App;
