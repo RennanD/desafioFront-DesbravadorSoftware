@@ -4,6 +4,7 @@ import { RepositoryPage } from './repository-page';
 import { useRepository } from '../../hooks/use-repository';
 import { useReadme } from '../../hooks/use-readme';
 import { MemoryRouter, useParams } from 'react-router';
+import axios from 'axios';
 
 // Mocks
 vi.mock('../../hooks/use-repository');
@@ -42,7 +43,6 @@ describe('RepositoryPage', () => {
     });
     
     // Mocking axios.isAxiosError to return true for this specific test
-    const axios = require('axios');
     vi.spyOn(axios, 'isAxiosError').mockReturnValue(true);
 
     render(
@@ -98,7 +98,6 @@ describe('RepositoryPage', () => {
       isLoading: false 
     });
 
-    const axios = require('axios');
     vi.spyOn(axios, 'isAxiosError').mockReturnValue(true);
 
     render(

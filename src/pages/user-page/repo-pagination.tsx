@@ -34,7 +34,7 @@ export function RepoPagination({
         size="sm"
         onClick={() => onPageChange(1)}
         disabled={isFirstPage || isLoading}
-        style={buttonStyle(isFirstPage || isLoading)}
+        style={buttonStyle(isFirstPage || !!isLoading)}
       >
         <ChevronsLeft size={16} />
       </Button>
@@ -44,7 +44,7 @@ export function RepoPagination({
         size="sm"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={isFirstPage || isLoading}
-        style={buttonStyle(isFirstPage || isLoading)}
+        style={buttonStyle(isFirstPage || !!isLoading)}
       >
         <ChevronLeft size={16} />
       </Button>
@@ -58,7 +58,7 @@ export function RepoPagination({
         size="sm"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={isLastPage || isLoading}
-        style={buttonStyle(isLastPage || isLoading)}
+        style={buttonStyle(isLastPage || !!isLoading)}
       >
         <ChevronRight size={16} />
       </Button>
@@ -68,7 +68,7 @@ export function RepoPagination({
         size="sm"
         onClick={() => onPageChange(totalPages)}
         disabled={isLastPage || isLoading}
-        style={buttonStyle(isLastPage || isLoading)}
+        style={buttonStyle(isLastPage || !!isLoading)}
       >
         <ChevronsRight size={16} />
       </Button>
