@@ -1,6 +1,6 @@
 import { Card, Table, Button, Badge, Container, Row, Col } from 'react-bootstrap';
 import { Star, ArrowUpDown } from 'lucide-react';
-import { UserInfo } from '../../components/user';
+import { User, UserAvatar, UserInfo, UserName, UserBio, UserStats, UserEmail } from '../../components/user';
 import { Link, useParams } from 'react-router';
 
 export function UserPage() {
@@ -12,14 +12,19 @@ export function UserPage() {
         <Row className="gap-4 gap-md-0">
           {/* Sidebar: User Info */}
           <Col md={4} lg={3}>
-            <UserInfo
-              avatarUrl="https://avatars.githubusercontent.com/u/74681655?v=4"
-              name="Barbara Machado"
-              bio="Frontend Developer | Tech Enthusiast | Open Source Contributor"
-              email="barbara@example.com"
-              followers={1200}
-              following={850}
-            />
+            <User className="flex-column align-items-center align-items-md-start">
+              <UserAvatar 
+                src="https://avatars.githubusercontent.com/u/74681655?v=4" 
+                alt="Barbara Machado"
+                size={200}
+              />
+              <UserInfo className="text-center text-md-start w-100">
+                <UserName text="Barbara Machado" />
+                <UserBio text="Frontend Developer | Tech Enthusiast | Open Source Contributor" />
+                <UserStats followers={1200} following={850} className="justify-content-center justify-content-md-start" />
+                <UserEmail email="barbara@example.com" className="justify-content-center justify-content-md-start mt-1" />
+              </UserInfo>
+            </User>
           </Col>
 
           {/* Main Content: Repos Table */}

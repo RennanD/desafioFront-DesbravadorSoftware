@@ -1,7 +1,8 @@
-import { Container, Row, Col, Card, Badge, Button } from 'react-bootstrap';
-import { Star, ExternalLink, FileText, ChevronRight } from 'lucide-react';
-import { Link, useParams } from 'react-router';
+import { Container, Card, Button } from 'react-bootstrap';
+import { Star, ExternalLink, FileText } from 'lucide-react';
+import { useParams } from 'react-router';
 import ReactMarkdown from 'react-markdown';
+import { User, UserAvatar, UserName } from '../../components/user';
 
 export function RepositoryPage() {
   const { user, repository } = useParams();
@@ -26,15 +27,18 @@ export function RepositoryPage() {
       <Container className="py-5" style={{ maxWidth: '960px' }}>
         {/* Breadcrumb Context */}
         <div className="d-flex align-items-center gap-2 mb-4">
-          <Link to={`/${user}`} className="text-decoration-none d-flex align-items-center gap-2">
-            <img 
+          <User align="center" gap={2}>
+            <UserAvatar 
               src={repoData.user.avatarUrl} 
-              alt={repoData.user.name}
-              className="rounded-circle"
-              style={{ width: '32px', height: '32px', objectFit: 'cover' }}
+              alt={repoData.user.name} 
+              size={32} 
             />
-            <span className="text-primary fw-medium">{repoData.user.name}</span>
-          </Link>
+            <UserName 
+              text={repoData.user.name} 
+              size="small" 
+              asLink={`/${user}`} 
+            />
+          </User>
           <span className="text-secondary">/</span>
           <span className="fw-bold text-dark">{repoData.name}</span>
         </div>
