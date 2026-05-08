@@ -97,9 +97,8 @@ Para visualizar a cobertura de testes (se configurado) ou rodar em modo watch, u
 -   `src/hooks`: Hooks customizados para abstração da lógica de dados (TanStack Query).
 -   `src/pages`: Páginas da aplicação (Search, User Profile, Repository Details).
 -   `src/lib`: Configurações de bibliotecas externas (Axios/API).
--   `src/test`: Utilitários e configurações globais para testes.
--   `.specs`: Especificações técnicas de cada funcionalidade desenvolvida.
+-   `src/test`: Utilitários e configurações globais para testes.desenvolvida.
 
 ---
 
-Desenvolvido com ❤️ por **Bárbara Machado** para o desafio **Desbravador Software**.
+Desenvolvido com ❤️ por **Rennan Oliveira** para o desafio **Desbravador Software**.
