@@ -2,6 +2,9 @@
 
 Este projeto é uma aplicação de exploração do GitHub desenvolvida como parte do desafio técnico para a vaga de Desenvolvedor Frontend na **Desbravador Software**. A aplicação permite buscar usuários do GitHub, visualizar seus perfis, listar repositórios com paginação e explorar detalhes específicos de cada repositório, incluindo a renderização de seus arquivos README.
 
+🔗 **Link do Projeto:** [https://github.com/RennanD/desafioFront-DesbravadorSoftware](https://github.com/RennanD/desafioFront-DesbravadorSoftware)
+
+
 ---
 
 ## 🚀 Tecnologias Utilizadas
