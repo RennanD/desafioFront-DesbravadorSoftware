@@ -1,99 +1,55 @@
-import { Card, Table, Button, Badge, Container, Row, Col } from 'react-bootstrap';
-import { Star, ArrowUpDown } from 'lucide-react';
-import { User, UserAvatar, UserInfo, UserName, UserBio, UserStats, UserEmail } from '../../components/user';
-import { Link, useParams } from 'react-router';
+import { Container, Row } from 'react-bootstrap';
+import { useParams } from 'react-router';
+import { useUserDetail } from '../../hooks/use-user-detail';
+import { useUserRepositories } from '../../hooks/use-user-repositories';
+import { UserSidebar } from './user-sidebar';
+import { UserRepoList } from './user-repo-list';
+import { SidebarSkeleton, TableSkeleton } from './user-skeletons';
+import { ErrorMessage } from '../../components/error-message';
 
 export function UserPage() {
   const { user } = useParams();
+
+  const { 
+    data: userData, 
+    isLoading: isLoadingUser, 
+    isError: isErrorUser,
+    error: userError 
+  } = useUserDetail(user);
+
+  const { 
+    data: repositories, 
+    isLoading: isLoadingRepos, 
+    isError: isErrorRepos 
+  } = useUserRepositories(user);
+
+  if (isErrorUser) {
+    const message = (userError as any)?.response?.status === 404 
+      ? 'Usuário não encontrado. Verifique o nome digitado e tente novamente.'
+      : 'Ocorreu um erro ao buscar os dados do usuário. Tente novamente mais tarde.';
+    
+    return <ErrorMessage message={message} />;
+  }
 
   return (
     <main className="bg-light" style={{ minHeight: 'calc(100vh - 64px)' }}>
       <Container className="py-5">
         <Row className="gap-4 gap-md-0">
-          {/* Sidebar: User Info */}
-          <Col md={4} lg={3}>
-            <User className="flex-column align-items-center align-items-md-start">
-              <UserAvatar 
-                src="https://avatars.githubusercontent.com/u/74681655?v=4" 
-                alt="Barbara Machado"
-                size={200}
-              />
-              <UserInfo className="text-center text-md-start w-100">
-                <UserName text="Barbara Machado" />
-                <UserBio text="Frontend Developer | Tech Enthusiast | Open Source Contributor" />
-                <UserStats followers={1200} following={850} className="justify-content-center justify-content-md-start" />
-                <UserEmail email="barbara@example.com" className="justify-content-center justify-content-md-start mt-1" />
-              </UserInfo>
-            </User>
-          </Col>
+          {/* Sidebar Area */}
+          {isLoadingUser || !userData ? (
+            <SidebarSkeleton />
+          ) : (
+            <UserSidebar userData={userData} />
+          )}
 
-          {/* Main Content: Repos Table */}
-          <Col md={8} lg={9}>
-            <Card className="border-0 shadow-sm">
-              <Card.Body className="p-4">
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h3 className="text-dark fw-bold m-0" style={{ fontSize: '24px' }}>
-                    Repositórios
-                  </h3>
-                  <Button variant="outline-secondary" size="sm" className="d-flex align-items-center gap-2">
-                    <ArrowUpDown size={14} /> Ordenar por: Estrelas
-                  </Button>
-                </div>
-
-                <Table hover responsive className="mb-0" style={{ minWidth: '600px' }}>
-                  <thead>
-                    <tr>
-                      <th className="border-top-0">Repositório</th>
-                      <th className="border-top-0" style={{ width: '120px' }}>Estrelas</th>
-                      <th className="border-top-0" style={{ width: '120px' }}>Linguagem</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="py-3">
-                        <Link 
-                          to={`/${user}/awesome-project`} 
-                          className="fw-semibold text-primary text-decoration-none"
-                        >
-                          awesome-project
-                        </Link>
-                        <p className="text-secondary mb-0 small">A curated list of awesome things for developers to build amazing apps.</p>
-                      </td>
-                      <td className="py-3 align-middle">
-                        <div className="d-flex align-items-center gap-1">
-                          <Star size={14} className="text-secondary" />
-                          <span>4.2k</span>
-                        </div>
-                      </td>
-                      <td className="py-3 align-middle">
-                        <Badge bg="warning" text="dark">JavaScript</Badge>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-3">
-                        <Link 
-                          to={`/${user}/react-hooks-library`} 
-                          className="fw-semibold text-primary text-decoration-none"
-                        >
-                          react-hooks-library
-                        </Link>
-                        <p className="text-secondary mb-0 small">Collection of useful React hooks for every day development.</p>
-                      </td>
-                      <td className="py-3 align-middle">
-                        <div className="d-flex align-items-center gap-1">
-                          <Star size={14} className="text-secondary" />
-                          <span>1.8k</span>
-                        </div>
-                      </td>
-                      <td className="py-3 align-middle">
-                        <Badge bg="primary">TypeScript</Badge>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Card.Body>
-            </Card>
-          </Col>
+          {/* Main Content Area */}
+          {isLoadingRepos || !repositories ? (
+            <TableSkeleton />
+          ) : isErrorRepos ? (
+            <ErrorMessage message="Não foi possível carregar os repositórios." />
+          ) : (
+            <UserRepoList repositories={repositories} username={user || ''} />
+          )}
         </Row>
       </Container>
     </main>
