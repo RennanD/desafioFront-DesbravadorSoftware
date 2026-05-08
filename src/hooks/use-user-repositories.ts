@@ -9,17 +9,24 @@ interface GithubRepo {
   language: string;
 }
 
-export function useUserRepositories(username: string | undefined) {
+interface SearchResponse {
+  total_count: number;
+  items: GithubRepo[];
+}
+
+export function useUserRepositories(
+  username: string | undefined, 
+  page: number = 1, 
+  order: string = 'desc'
+) {
   return useQuery({
-    queryKey: ['repos', username],
+    queryKey: ['repos', username, page, order],
     queryFn: async () => {
-      const response = await api.get<GithubRepo[]>(`/users/${username}/repos?per_page=100`);
+      const response = await api.get<SearchResponse>(
+        `/search/repositories?q=user:${username}&sort=stars&order=${order}&per_page=10&page=${page}`
+      );
       return response.data;
     },
     enabled: !!username,
-    select: (data) => {
-      // Sorting by stars descending as per requirement
-      return [...data].sort((a, b) => b.stargazers_count - a.stargazers_count);
-    }
   });
 }
