@@ -2,7 +2,8 @@
 
 Este projeto é uma aplicação de exploração do GitHub desenvolvida como parte do desafio técnico para a vaga de Desenvolvedor Frontend na **Desbravador Software**. A aplicação permite buscar usuários do GitHub, visualizar seus perfis, listar repositórios com paginação e explorar detalhes específicos de cada repositório, incluindo a renderização de seus arquivos README.
 
-🔗 **Link do Projeto:** [https://github.com/RennanD/desafioFront-DesbravadorSoftware](https://github.com/RennanD/desafioFront-DesbravadorSoftware)
+🔗 **Link da Aplicação:** [https://github-explorer-ds.netlify.app/](https://github-explorer-ds.netlify.app/)
+📂 **Repositório:** [https://github.com/RennanD/desafioFront-DesbravadorSoftware](https://github.com/RennanD/desafioFront-DesbravadorSoftware)
 
 
 ---
@@ -100,7 +101,7 @@ Para visualizar a cobertura de testes (se configurado) ou rodar em modo watch, u
 -   `src/hooks`: Hooks customizados para abstração da lógica de dados (TanStack Query).
 -   `src/pages`: Páginas da aplicação (Search, User Profile, Repository Details).
 -   `src/lib`: Configurações de bibliotecas externas (Axios/API).
--   `src/test`: Utilitários e configurações globais para testes.desenvolvida.
+-   `src/test`: Utilitários e configurações globais para testes.
 
 ---
 
