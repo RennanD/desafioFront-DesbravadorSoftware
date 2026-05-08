@@ -1,8 +1,11 @@
 import { Card, Table, Button, Badge, Container, Row, Col } from 'react-bootstrap';
 import { Star, ArrowUpDown } from 'lucide-react';
 import { UserInfo } from '../../components/user';
+import { Link, useParams } from 'react-router';
 
 export function UserPage() {
+  const { user } = useParams();
+
   return (
     <main className="bg-light" style={{ minHeight: 'calc(100vh - 64px)' }}>
       <Container className="py-5">
@@ -43,7 +46,12 @@ export function UserPage() {
                   <tbody>
                     <tr>
                       <td className="py-3">
-                        <a href="#" className="fw-semibold text-primary text-decoration-none">awesome-project</a>
+                        <Link 
+                          to={`/${user}/awesome-project`} 
+                          className="fw-semibold text-primary text-decoration-none"
+                        >
+                          awesome-project
+                        </Link>
                         <p className="text-secondary mb-0 small">A curated list of awesome things for developers to build amazing apps.</p>
                       </td>
                       <td className="py-3 align-middle">
@@ -58,7 +66,12 @@ export function UserPage() {
                     </tr>
                     <tr>
                       <td className="py-3">
-                        <a href="#" className="fw-semibold text-primary text-decoration-none">react-hooks-library</a>
+                        <Link 
+                          to={`/${user}/react-hooks-library`} 
+                          className="fw-semibold text-primary text-decoration-none"
+                        >
+                          react-hooks-library
+                        </Link>
                         <p className="text-secondary mb-0 small">Collection of useful React hooks for every day development.</p>
                       </td>
                       <td className="py-3 align-middle">
