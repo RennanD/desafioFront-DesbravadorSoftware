@@ -1,9 +1,38 @@
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+const searchSchema = z.object({
+  username: z.string().trim().min(1, 'Digite um nome de usuário para buscar'),
+});
+
+type SearchFormData = z.infer<typeof searchSchema>;
 
 export function SearchPage() {
   const navigate = useNavigate();
+  
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    clearErrors,
+  } = useForm<SearchFormData>({
+    resolver: zodResolver(searchSchema),
+    defaultValues: {
+      username: '',
+    }
+  });
+
+  const usernameValue = watch('username');
+  const isButtonDisabled = !usernameValue || usernameValue.trim().length === 0;
+
+  const onSubmit = (data: SearchFormData) => {
+    navigate(`/${data.username}`);
+  };
 
   return (
     <div 
@@ -28,30 +57,46 @@ export function SearchPage() {
             Busque por usuários e explore seus repositórios
           </p>
           
-          <div className="d-flex flex-column" style={{ gap: '16px' }}>
-            <InputGroup 
-              className="input-group-focus-custom"
-              style={{ height: '48px', borderRadius: '6px', border: '1px solid var(--bs-border-color)', overflow: 'hidden' }}
-            >
-              <InputGroup.Text className="bg-white pe-0 border-0">
-                <Search size={20} color="var(--bs-secondary)" />
-              </InputGroup.Text>
-              <Form.Control
-                className="ps-2 border-0 shadow-none bg-transparent"
-                placeholder="Digite o nome de usuário..."
-                style={{ fontSize: '16px', height: '100%' }}
-              />
-            </InputGroup>
+          <Form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column" style={{ gap: '16px' }}>
+            <div>
+              <InputGroup 
+                className={`input-group-focus-custom ${errors.username ? 'is-invalid' : ''}`}
+                style={{ height: '48px', borderRadius: '6px', border: '1px solid var(--bs-border-color)', overflow: 'hidden' }}
+              >
+                <InputGroup.Text className="bg-white pe-0 border-0">
+                  <Search size={20} color="var(--bs-secondary)" />
+                </InputGroup.Text>
+                <Form.Control
+                  {...register('username', { onChange: () => clearErrors('username') })}
+                  className={`ps-2 border-0 shadow-none bg-transparent ${errors.username ? 'is-invalid' : ''}`}
+                  placeholder="Digite o nome de usuário..."
+                  style={{ fontSize: '16px', height: '100%' }}
+                />
+              </InputGroup>
+              {errors.username && (
+                <Form.Control.Feedback type="invalid" className="d-block mt-1">
+                  {errors.username.message}
+                </Form.Control.Feedback>
+              )}
+            </div>
             
             <Button 
+              type="submit"
               variant="primary" 
+              disabled={isButtonDisabled}
               className="w-100 d-flex align-items-center justify-content-center"
-              style={{ fontWeight: 500, fontSize: '16px', height: '48px', borderRadius: '6px' }}
-              onClick={() => navigate('/rennand')}
+              style={{ 
+                fontWeight: 500, 
+                fontSize: '16px', 
+                height: '48px', 
+                borderRadius: '6px',
+                opacity: isButtonDisabled ? 0.6 : 1,
+                cursor: isButtonDisabled ? 'not-allowed' : 'pointer'
+              }}
             >
               Buscar Usuário
             </Button>
-          </div>
+          </Form>
         </Card.Body>
       </Card>
     </div>
