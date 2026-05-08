@@ -1,26 +1,48 @@
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button, Spinner } from 'react-bootstrap';
 import { Star, ExternalLink, FileText } from 'lucide-react';
 import { useParams } from 'react-router';
 import ReactMarkdown from 'react-markdown';
 import { User, UserAvatar, UserName } from '../../components/user';
+import { useRepository } from '../../hooks/use-repository';
+import { useReadme } from '../../hooks/use-readme';
+import { ErrorMessage } from '../../components/error-message/error-message';
+import axios from 'axios';
 
 export function RepositoryPage() {
   const { user, repository } = useParams();
 
-  // Dados estáticos para demonstração (conforme padrão do projeto)
-  const repoData = {
-    name: repository || 'awesome-project',
-    description: 'A curated list of awesome things for developers to build amazing apps. This project is a collection of resources, libraries, and tools that help in day-to-day development.',
-    stars: '4.2k',
-    language: 'JavaScript',
-    externalUrl: 'https://github.com',
-    user: {
-      name: user || 'Barbara Machado',
-      avatarUrl: 'https://avatars.githubusercontent.com/u/74681655?v=4',
-    },
-    // Simulação de README (pode ser null para testar o empty state)
-    readme: `# awesome-project\n\nThis is a sample README content for the **${repository}** repository.\n\n## Features\n- Modern UI with React\n- Responsive Design\n- GitHub API Integration\n\n## Getting Started\n1. Clone the repo\n2. Run \`npm install\`\n3. Run \`npm run dev\``
-  };
+  const { 
+    data: repoData, 
+    isLoading: isLoadingRepo, 
+    isError: isErrorRepo, 
+    error: repoError 
+  } = useRepository(user, repository);
+
+  const { 
+    data: readmeData, 
+    isLoading: isLoadingReadme, 
+    isError: isErrorReadme, 
+    error: readmeError 
+  } = useReadme(user, repository);
+
+  // 1. Erro de Repositório (404 ou outros)
+  if (isErrorRepo) {
+    const is404 = axios.isAxiosError(repoError) && repoError.response?.status === 404;
+    return (
+      <ErrorMessage 
+        message={is404 ? 'Repositório não encontrado.' : 'Ocorreu um erro ao carregar o repositório.'} 
+      />
+    );
+  }
+
+  // 2. Loading Inicial do Repositório
+  if (isLoadingRepo || !repoData) {
+    return (
+      <Container className="py-5 text-center">
+        <Spinner animation="border" variant="primary" />
+      </Container>
+    );
+  }
 
   return (
     <main className="bg-light" style={{ minHeight: 'calc(100vh - 64px)' }}>
@@ -29,12 +51,12 @@ export function RepositoryPage() {
         <div className="d-flex align-items-center gap-2 mb-4">
           <User align="center" gap={2}>
             <UserAvatar 
-              src={repoData.user.avatarUrl} 
-              alt={repoData.user.name} 
+              src={repoData.owner.avatar_url} 
+              alt={repoData.owner.login} 
               size={32} 
             />
             <UserName 
-              text={repoData.user.name} 
+              text={repoData.owner.login} 
               size="small" 
               asLink={`/${user}`} 
             />
@@ -47,27 +69,29 @@ export function RepositoryPage() {
         <Card className="border-0 shadow-sm mb-4">
           <Card.Body className="p-4">
             <p className="text-secondary mb-4" style={{ fontSize: '18px' }}>
-              {repoData.description}
+              {repoData.description || 'Nenhuma descrição fornecida.'}
             </p>
             
             <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
               <div className="d-flex align-items-center gap-4">
                 <div className="d-flex align-items-center gap-1 text-secondary">
                   <Star size={18} />
-                  <span><strong>{repoData.stars}</strong> stars</span>
+                  <span><strong>{repoData.stargazers_count}</strong> stars</span>
                 </div>
-                <div className="d-flex align-items-center gap-2">
-                  <span 
-                    className="rounded-circle" 
-                    style={{ width: '12px', height: '12px', backgroundColor: '#f1e05a' }} 
-                  />
-                  <span className="text-secondary">{repoData.language}</span>
-                </div>
+                {repoData.language && (
+                  <div className="d-flex align-items-center gap-2">
+                    <span 
+                      className="rounded-circle" 
+                      style={{ width: '12px', height: '12px', backgroundColor: '#f1e05a' }} 
+                    />
+                    <span className="text-secondary">{repoData.language}</span>
+                  </div>
+                )}
               </div>
 
               <Button 
                 variant="outline-primary" 
-                href={repoData.externalUrl} 
+                href={repoData.html_url} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="d-flex align-items-center gap-2"
@@ -88,16 +112,21 @@ export function RepositoryPage() {
             </div>
           </Card.Header>
           <Card.Body className="p-4 p-md-5">
-            {repoData.readme ? (
-              <div className="markdown-body">
-                <ReactMarkdown>{repoData.readme}</ReactMarkdown>
+            {isLoadingReadme ? (
+              <div className="text-center py-5">
+                <Spinner animation="border" variant="primary" size="sm" />
               </div>
+            ) : isErrorReadme ? (
+              <ErrorMessage 
+                message={
+                  (axios.isAxiosError(readmeError) && readmeError.response?.status === 404)
+                    ? 'README não encontrado para este repositório.'
+                    : 'Erro ao carregar o README.'
+                } 
+              />
             ) : (
-              <div className="text-center py-5 bg-light rounded border border-dashed">
-                <FileText size={48} className="text-secondary opacity-25 mb-3" />
-                <p className="text-secondary mb-0">
-                  README não encontrado para este repositório
-                </p>
+              <div className="markdown-body">
+                <ReactMarkdown>{readmeData?.decodedContent || ''}</ReactMarkdown>
               </div>
             )}
           </Card.Body>
