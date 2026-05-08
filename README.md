@@ -1,73 +1,105 @@
-# React + TypeScript + Vite
+# GitHub Explorer - Desafio Frontend Desbravador Software
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma aplicação de exploração do GitHub desenvolvida como parte do desafio técnico para a vaga de Desenvolvedor Frontend na **Desbravador Software**. A aplicação permite buscar usuários do GitHub, visualizar seus perfis, listar repositórios com paginação e explorar detalhes específicos de cada repositório, incluindo a renderização de seus arquivos README.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologias Utilizadas
 
-## React Compiler
+O projeto foi construído utilizando as melhores práticas e ferramentas modernas do ecossistema React:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+-   **React 19**: Biblioteca principal para construção da interface.
+-   **TypeScript**: Garantia de tipagem estática e maior segurança no desenvolvimento.
+-   **Vite**: Build tool extremamente rápida para o desenvolvimento frontend.
+-   **TanStack Query (v5)**: Gerenciamento de estado assíncrono, cache e sincronização de dados da API.
+-   **Axios**: Cliente HTTP para consumo da API do GitHub.
+-   **React Bootstrap**: Framework de componentes UI para um design responsivo e consistente.
+-   **Lucide React**: Biblioteca de ícones modernos e leves.
+-   **React Markdown**: Renderização de arquivos Markdown (README) diretamente na aplicação.
+-   **Vitest & React Testing Library**: Suíte de testes unitários e de integração.
+-   **Biome**: Ferramenta completa para linting e formatação de código.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Funcionalidades
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+-   **Busca de Usuários**: Pesquise qualquer usuário do GitHub através de seu login.
+-   **Perfil Detalhado**: Visualização de bio, seguidores, seguindo, e-mail e avatar.
+-   **Lista de Repositórios**:
+    -   Exibição de todos os repositórios públicos do usuário.
+    -   Paginação robusta integrada à API de busca do GitHub.
+    -   Ordenação automática por número de estrelas.
+-   **Detalhes do Repositório**:
+    -   Exibição de metadados (estrelas, linguagem, descrição).
+    -   Busca e decodificação do arquivo README em tempo real.
+    -   Renderização rica de Markdown.
+-   **Tratamento de Erros**: Feedback visual claro para usuários ou repositórios não encontrados (404) utilizando componentes dedicados.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📦 Como Instalar e Rodar
+
+Siga os passos abaixo para configurar o projeto localmente:
+
+### Pré-requisitos
+
+-   [Node.js](https://nodejs.org/) (recomendado versão 18 ou superior)
+-   [npm](https://www.npmjs.com/) ou [pnpm](https://pnpm.io/)
+
+### Passo a Passo
+
+1.  **Clonar o repositório**:
+    ```bash
+    git clone https://github.com/seu-usuario/desafioFront-DesbravadorSoftware.git
+    cd desafioFront-DesbravadorSoftware
+    ```
+
+2.  **Instalar dependências**:
+    ```bash
+    npm install
+    # ou se usar pnpm
+    pnpm install
+    ```
+
+3.  **Configurar Variáveis de Ambiente**:
+    Crie um arquivo `.env` na raiz do projeto (ou copie do `.env.example`):
+    ```env
+    VITE_API_URL=https://api.github.com
+    ```
+
+4.  **Rodar o servidor de desenvolvimento**:
+    ```bash
+    npm run dev
+    # ou
+    pnpm dev
+    ```
+    A aplicação estará disponível em `http://localhost:5173`.
+
+---
+
+## 🧪 Executando Testes
+
+Para garantir a qualidade do código, você pode rodar os testes unitários e de integração:
+
+```bash
+npm run test
+# ou
+pnpm test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Para visualizar a cobertura de testes (se configurado) ou rodar em modo watch, utilize as flags do Vitest.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠️ Estrutura do Projeto
+
+-   `src/components`: Componentes reutilizáveis (Header, ErrorMessage, User components).
+-   `src/hooks`: Hooks customizados para abstração da lógica de dados (TanStack Query).
+-   `src/pages`: Páginas da aplicação (Search, User Profile, Repository Details).
+-   `src/lib`: Configurações de bibliotecas externas (Axios/API).
+-   `src/test`: Utilitários e configurações globais para testes.
+-   `.specs`: Especificações técnicas de cada funcionalidade desenvolvida.
+
+---
+
+Desenvolvido com ❤️ por **Bárbara Machado** para o desafio **Desbravador Software**.
